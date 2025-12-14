@@ -185,14 +185,12 @@ lib_deps =
     knolleary/PubSubClient @ ^2.8
     bblanchon/ArduinoJson @ ^6
     adafruit/Adafruit BME280 Library @ ^2.2.4
-    adafruit/Adafruit Unified Sensor @ ^1.1.14
 ```
 |Bibliothek |Version |Lizenz |Zweck |
 |------------|-------------|-----------------|-----------------|
 | PubSubClient |	2.8 |	MIT	| MQTT-Client (TLS-Support) |
 | ArduinoJson |	6.x |	MIT |	JSON-Serialisierung |
 | Adafruit_BME280 |	2.2.4 |	BSD |	BME280-Sensor-Treiber|
-| Adafruit_Unified_Sensor |	1.1.14 |	Apache |	Sensor-Abstraktionsschicht |
 
 ---
 ## 5. Komponenten Funktionsweise
@@ -252,6 +250,7 @@ mqtt.connect(clientId, mqttUser, mqttPass, "smarthome/senderniklas/status", 0, t
 **JSON-Payload (env):**
 ```json
 {
+  "iso8601": "2025-11-30T14:23:45+01:00"
   "ts": 1732972425,
   "temp": 23.45,
   "hum": 65.32,
@@ -559,11 +558,6 @@ Initiales Design hatte 2-3 Tage Laufzeit, Ziel war ~1 Jahr.
 |MQTT Explorer|	0.4.0-beta|	MQTT-Debugging|
 |Serial Monitor|	0.4.0|	Log-Analyse|
 
-### 8.5 Hardware-Recources
-- ESP32-WROOM-32D Datasheet (Espressif)
-- BME280 Digital Humidity, Pressure and Temperature Sensor (Bosch)
-- 18650 Li-Ion Cell Specification (Samsung INR18650-25R)
-
 ## 9.  Anhang
 ### 9.1 Konfigurationsdatei (secrets.h)
 ```cpp
@@ -585,7 +579,7 @@ static const char ROOT_CA[] PROGMEM = R"PEM(
 ```
 
 ### 9.2 PlatformIO-Konfiguration
-```
+```ini
 [env:az-delivery-devkit-v4]
 platform = espressif32
 board = az-delivery-devkit-v4
@@ -655,4 +649,4 @@ Environment (env):
 |21|	I2C SDA|	I/O|	BME280|
 |22|	I2C SCL|	Output|	BME280|
 |23|	SPI MOSI|	Output|	SD-Karte|
-|5|	SD CS|	Output|	Chip Select|
+|5|	SD CS|	Output|	Chip Select (SD Karte)|
