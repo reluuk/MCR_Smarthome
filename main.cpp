@@ -10,7 +10,7 @@ Beschreibung:
 Hardware:
   ┌───────────────────────────────────────────────────────────────────┐
   │ ESP32 DevKit V1                                                   │
-  │  ├─ GPIO14 ─── Taster ─────────────── GND    (Config-Mode Toggle) │
+  │  ├─ GPIO14 ─── Taster ─────────────── GND  (Config-Mode Toggle)   │
   │  ├─ GPIO17 ─── LED Grün ──── 220Ω ─┬─ GND  (WiFi/MQTT Status)     │
   │  ├─ GPIO16 ─── LED Rot  ──── 220Ω  ┘                              │
   │  ├─ GPIO21 ─── I2C SDA ────────────── BME280 (0x76)               │
@@ -107,7 +107,7 @@ Datum: 2025-11-30
 // =============================================================================
 // KONFIGURATION
 // =============================================================================
-const char* AP_SSID = "ESP32-Setup-Niklas";
+const char* AP_SSID = "ESP32-Setup-Lukas";
 const char* AP_PASS = "smarthome";
 const char* CSV_PATH = "/smarthome.csv";
 
@@ -293,7 +293,7 @@ void publishStateToMQTT(SystemState state) {
   char payload[384];
   serializeJson(doc, payload);
   
-  mqtt.publish("smarthome/senderniklas/state", payload, true);
+  mqtt.publish("smarthome/senderlukas/state", payload, true);
   Serial.printf("📡 State published: %s\n", payload);
 }
 
@@ -517,10 +517,10 @@ bool connectMQTT() {
   
   String cid = "esp32-" + String((uint32_t)ESP.getEfuseMac(), HEX);
   mqttConnected = mqtt.connect(cid.c_str(), mqttUser.c_str(), mqttPass.c_str(),
-                               "smarthome/senderniklas/status", 1, true, "offline");
+                               "smarthome/senderlukas/status", 1, true, "offline");
   
   if (mqttConnected) {
-    mqtt.publish("smarthome/senderniklas/status", "online", true);
+    mqtt.publish("smarthome/senderlukas/status", "online", true);
     Serial.println("✅ MQTT OK");
     errors.mqtt = false;
   } else {
@@ -551,7 +551,7 @@ void publishState(SystemState state) {
   
   char buf[384];
   serializeJson(doc, buf);
-  mqtt.publish("smarthome/senderniklas/state", buf, true);
+  mqtt.publish("smarthome/senderlukas/state", buf, true);
 }
 
 // =============================================================================
@@ -711,7 +711,7 @@ bool measureAndPublish() {
   char buf[256];
   serializeJson(doc, buf);
   
-  bool ok = mqtt.publish("smarthome/senderniklas/env", buf);
+  bool ok = mqtt.publish("smarthome/senderlukas/env", buf);
   if (ok) signalPublish();
   else { mqttConnected = false; errors.mqtt = true; }
   
@@ -985,10 +985,10 @@ void handleStateNormal() {
   doc["duration"] = sleepTime;
   char buf[128];
   serializeJson(doc, buf);
-  mqtt.publish("smarthome/senderniklas/state", buf, true);
+  mqtt.publish("smarthome/senderlukas/state", buf, true);
   delay(100);
   
-  mqtt.publish("smarthome/senderniklas/status", "offline", true);
+  mqtt.publish("smarthome/senderlukas/status", "offline", true);
   delay(100);
   mqtt.disconnect();
   delay(100);
@@ -1073,7 +1073,7 @@ void setup() {
   ledcSetup(LED_PWM_CHANNEL, LED_PWM_FREQ, LED_PWM_RESOLUTION);
   
   Serial.println("\n\n╔════════════════════════════════════╗");
-  Serial.println("║  ESP32 Environmental Logger v1.1   ║");
+  Serial.println("║  ESP32 Environmental Logger v1.0   ║");
   Serial.println("╚════════════════════════════════════╝\n");
   
   // Check wakeup reason
