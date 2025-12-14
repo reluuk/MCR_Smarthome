@@ -1,11 +1,10 @@
-# ESP32 Umwelt-Datenlogger – Projektdokumentation
-
+# ESP32 Umwelt-Datenlogger  
 **Projekt:** SmartHome im Fach Microcontroller – Batteriebetriebener IoT-Datenlogger  
 **Entwickler:** Lukas Reif in Kollaboration mit Niklas Bräu  
 **Datum:** November 2025  
 **Plattform/MCU:** ESP32 DevKit V1 (az-delivery-devkit-v4)  
 
-**Hinweis**: Dieses Projekt wurde im Rahmen der Techniker-Ausbildung (MCR) entwickelt. Der Code steht unter MIT-Lizenz und darf frei verwendet werden. Für produktiven Einsatz wird empfohlen, die MQTT-Credentials in einer separaten, nicht versionierten Headerdatei zu speichern.
+**Hinweis**: Dieses Projekt wurde im Rahmen der Techniker-Ausbildung (MCR) an der Rudolf-Diesel-Fachschule entwickelt. Der Code steht unter MIT-Lizenz und darf frei verwendet werden. Für produktiven Einsatz wird empfohlen, die MQTT-Credentials in einer separaten, nicht versionierten Headerdatei zu speichern.
 
 ---
 
