@@ -38,9 +38,9 @@ Stromverbrauch (ca.):
   - 2600mAh 18650 Akku:    ~400 Tage Laufzeit
 
 MQTT Topics:
-  📤 smarthome/senderlukas/status  → "online"/"offline" (retained)
-  📤 smarthome/senderlukas/state   → System-Status JSON (retained)
-  📤 smarthome/senderlukas/env     → Messdaten JSON
+  📤 smarthome/sender/status  → "online"/"offline" (retained)
+  📤 smarthome/sender/state   → System-Status JSON (retained)
+  📤 smarthome/sender/env     → Messdaten JSON
 
 CSV-Format (SD-Karte):
   iso8601,epoch,temp_C,humidity_%,pressure_hPa
@@ -69,7 +69,7 @@ LED-Codes:
   Warte auf Minute    | Breathe (dimmt) | Aus
   MQTT Publish        | 6x Pulse        | Aus
 
-Entwickler: Lukas Reif
+Entwickler: Lukas Reif & Niklas Bräu
 Datum: 2025-11-30
 =============================================================================
 */
@@ -107,7 +107,7 @@ Datum: 2025-11-30
 // =============================================================================
 // KONFIGURATION
 // =============================================================================
-const char* AP_SSID = "ESP32-Setup-Lukas";
+const char* AP_SSID = "ESP32-Setup";
 const char* AP_PASS = "smarthome";
 const char* CSV_PATH = "/smarthome.csv";
 
@@ -230,7 +230,7 @@ void publishState(SystemState state);
 
 /**
  * Published aktuellen System-Status als JSON zu MQTT
- * Topic: smarthome/senderlukas/state (retained)
+ * Topic: smarthome/sender/state (retained)
  * 
  * Payload-Beispiel:
  * {
@@ -293,7 +293,7 @@ void publishStateToMQTT(SystemState state) {
   char payload[384];
   serializeJson(doc, payload);
   
-  mqtt.publish("smarthome/senderlukas/state", payload, true);
+  mqtt.publish("smarthome/sender/state", payload, true);
   Serial.printf("📡 State published: %s\n", payload);
 }
 
@@ -517,10 +517,10 @@ bool connectMQTT() {
   
   String cid = "esp32-" + String((uint32_t)ESP.getEfuseMac(), HEX);
   mqttConnected = mqtt.connect(cid.c_str(), mqttUser.c_str(), mqttPass.c_str(),
-                               "smarthome/senderlukas/status", 1, true, "offline");
+                               "smarthome/sender/status", 1, true, "offline");
   
   if (mqttConnected) {
-    mqtt.publish("smarthome/senderlukas/status", "online", true);
+    mqtt.publish("smarthome/sender/status", "online", true);
     Serial.println("✅ MQTT OK");
     errors.mqtt = false;
   } else {
@@ -551,7 +551,7 @@ void publishState(SystemState state) {
   
   char buf[384];
   serializeJson(doc, buf);
-  mqtt.publish("smarthome/senderlukas/state", buf, true);
+  mqtt.publish("smarthome/sender/state", buf, true);
 }
 
 // =============================================================================
@@ -711,7 +711,7 @@ bool measureAndPublish() {
   char buf[256];
   serializeJson(doc, buf);
   
-  bool ok = mqtt.publish("smarthome/senderlukas/env", buf);
+  bool ok = mqtt.publish("smarthome/sender/env", buf);
   if (ok) signalPublish();
   else { mqttConnected = false; errors.mqtt = true; }
   
@@ -985,10 +985,10 @@ void handleStateNormal() {
   doc["duration"] = sleepTime;
   char buf[128];
   serializeJson(doc, buf);
-  mqtt.publish("smarthome/senderlukas/state", buf, true);
+  mqtt.publish("smarthome/sender/state", buf, true);
   delay(100);
   
-  mqtt.publish("smarthome/senderlukas/status", "offline", true);
+  mqtt.publish("smarthome/sender/status", "offline", true);
   delay(100);
   mqtt.disconnect();
   delay(100);
